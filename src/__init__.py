@@ -1,0 +1,1 @@
+"""Knowledge synchronization application."""
