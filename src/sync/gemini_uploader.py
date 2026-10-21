@@ -159,7 +159,15 @@ class GeminiUploader:
                     operation = self.client.file_search_stores.upload_to_file_search_store(
                         file=str(file_path),
                         file_search_store_name=self.store_name,
-                        config={"display_name": display_name},
+                        config={
+                            "display_name": display_name,
+                            "chunking_config": {
+                                "white_space_config": {
+                                    "max_tokens_per_chunk": 200,
+                                    "max_overlap_tokens": 20,
+                                }
+                            },
+                        },
                     )
                 except Exception as upload_error:
                     # Reconcile by deterministic name before retrying an ambiguous

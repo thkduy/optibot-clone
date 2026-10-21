@@ -23,9 +23,15 @@ The job runs once: exit code `0` means success; `1` means failure. Unit tests ca
 
 The job runs daily on [Render](https://dashboard.render.com/). View the [scheduled job logs](https://dashboard.render.com/cron/crn-dbbk3tuq1p3s73cslcd0/logs?r=live) in the Render dashboard (sign-in required). For a quick view of the latest run summary, open [`last-run.json` on GitHub Gist](https://gist.github.com/thkduy/ed980e349bd9ce26a3602fbf370949fc#file-last-run-json); it includes the latest sync counts and status.
 
+![Example of the scheduled job logs in Render](screenshots/cron-job-logs.png)
+
 ## Chunking strategy
 
-The sync uploads each article as a Markdown document and relies on Gemini File Search's default automatic chunking during indexing. This keeps article boundaries and formatting intact in the source files while letting Gemini split content for retrieval. The project does not set chunk size or overlap, and it does not report a chunk count: Gemini does not expose a reliable embedded-chunk total through this workflow.
+Each support article is saved as a separate Markdown file and uploaded to Google Gemini File Search API. Gemini manages the actual chunking and embedding process internally.
+
+The initial configuration uses whitespace-based chunking with a maximum of 200 tokens per chunk and 20 tokens of overlap. These values provide a baseline for testing retrieval quality and can be adjusted if needed.
+
+The pipeline logs sync summary counts and article synchronization failures. Exact chunk counts are not reported because the documented API does not expose a total count of indexed chunks.
 
 ## Assistant sample
 
